@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {hash} from "bcrypt"
 import { z } from "zod";
+import { prisma } from "../database/prisma";
 
 class UsersController {
     async create(request: Request, response: Response): Promise<any> {
