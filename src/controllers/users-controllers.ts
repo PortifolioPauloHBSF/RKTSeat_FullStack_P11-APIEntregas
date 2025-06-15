@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import {hash} from "bcrypt"
+import { hash } from "bcrypt";
 import { z } from "zod";
-import { prisma } from "../database/prisma";
 
 class UsersController {
     async create(request: Request, response: Response): Promise<any> {
@@ -12,7 +11,7 @@ class UsersController {
         });
 
         const { name, email, password } = bodySchema.parse(request.body);
-        const hashedPassword = await hash(password, Number(process.env.PASSWORD_HASH))
+        const hashedPassword = await hash(password, Number(process.env.PASSWORD_HASH));
 
         return response.json({ message: "Ok", hashedPassword });
     }
