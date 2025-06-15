@@ -10,6 +10,7 @@
     "author": "Paulo Henrique",
     "license": "ISC",
     "dependencies": {
+        "@prisma/client": "^6.9.0",
         "express": "^5.1.0",
         "zod": "^3.25.64"
     },
