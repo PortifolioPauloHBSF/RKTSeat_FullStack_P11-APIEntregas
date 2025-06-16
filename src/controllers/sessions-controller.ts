@@ -3,6 +3,8 @@ import { prisma } from "@/database/prisma";
 import { z } from "zod";
 import { AppError } from "@/utils/AppError";
 import { compare } from "bcrypt";
+import { authConfig } from "@/configs/auth";
+import { sign } from "jsonwebtoken";
 
 class SessionsController {
     async create(request: Request, response: Response): Promise<any> {
@@ -21,12 +23,24 @@ class SessionsController {
             throw new AppError("Invalid Email or Password", 401);
         }
 
-        const passwordMathced = await compare(password, user.password)
+        const passwordMathced = await compare(password, user.password);
         if (!passwordMathced) {
             throw new AppError("Invalid Email or Password", 401);
         }
 
-        return response.json({ message: "Ok" });
+        const { secret, expiresIn } = authConfig.jwt;
+        if (!secret || !expiresIn) {
+            throw new AppError("Failure while retrieving token data");
+        }
+
+        const token = sign({ role: user.role ?? "customer" }, secret, {
+            subject: user.id,
+            expiresIn,
+        });
+
+        const { password: hashedPassword, ...userWithoutPassword } = user;
+
+        return response.json({ token, user: userWithoutPassword });
     }
 }
 
