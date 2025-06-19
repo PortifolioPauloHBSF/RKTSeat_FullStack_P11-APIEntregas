@@ -9,7 +9,7 @@ interface TokenPaylod {
     sub: string;
 }
 
-function EnsureAuthenticated(request: Request, response: Response, next: NextFunction) {
+function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
     try {
         const authHeader = request.headers.authorization;
 
@@ -32,4 +32,4 @@ function EnsureAuthenticated(request: Request, response: Response, next: NextFun
     }
 }
 
-export { EnsureAuthenticated };
+export { ensureAuthenticated };
