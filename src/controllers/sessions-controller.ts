@@ -23,8 +23,8 @@ class SessionsController {
             throw new AppError("Invalid Email or Password", 401);
         }
 
-        const passwordMathced = await compare(password, user.password);
-        if (!passwordMathced) {
+        const passwordMatched = await compare(password, user.password);
+        if (!passwordMatched) {
             throw new AppError("Invalid Email or Password", 401);
         }
 
@@ -35,7 +35,7 @@ class SessionsController {
 
         const token = sign({ role: user.role ?? "customer" }, secret, {
             subject: user.id,
-            expiresIn,
+            expiresIn: expiresIn,
         });
 
         const { password: hashedPassword, ...userWithoutPassword } = user;
