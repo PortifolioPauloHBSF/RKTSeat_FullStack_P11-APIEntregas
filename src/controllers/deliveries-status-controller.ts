@@ -1,5 +1,6 @@
 import { prisma } from "@/database/prisma";
 import { Request, Response } from "express";
+import { stat } from "fs";
 import { z } from "zod";
 
 class DeliveriesStatusController {
@@ -23,6 +24,14 @@ class DeliveriesStatusController {
                 id,
             },
         });
+
+        await prisma.deliveryLog.create({
+            data: {
+                deliveryId: id,
+                description: status
+            },
+        });
+
         return response.json();
     }
 }
