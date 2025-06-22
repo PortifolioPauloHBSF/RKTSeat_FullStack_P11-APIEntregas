@@ -23,6 +23,10 @@ class DeliveryLogsController {
             throw new AppError("delivery is not at shipped status already", 404);
         }
 
+        if (delivery.status === "delivered") {
+            throw new AppError("this delivery has already been delivered");
+        }
+
         await prisma.deliveryLog.create({
             data: {
                 deliveryId: delivery_id,
@@ -52,8 +56,8 @@ class DeliveryLogsController {
             },
         });
 
-        if(request.user?.role === "customer" && request.user.id !== delivery?.userId){
-            throw new AppError("you can only view your own deliveries", 401)
+        if (request.user?.role === "customer" && request.user.id !== delivery?.userId) {
+            throw new AppError("you can only view your own deliveries", 401);
         }
 
         return response.json(delivery);
