@@ -10,6 +10,7 @@ const deliveriesController = new DeliveriesController();
 deliveryRoutes.use(ensureAuthenticated);
 deliveryRoutes.use(verifyUserAuthorization(["sale"]));
 
+deliveryRoutes.get("/", deliveriesController.index);
 deliveryRoutes.post("/", deliveriesController.create);
 
 export { deliveryRoutes };

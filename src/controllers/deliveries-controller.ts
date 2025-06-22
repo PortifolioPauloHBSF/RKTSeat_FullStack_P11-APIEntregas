@@ -3,6 +3,15 @@ import { prisma } from "@/database/prisma";
 import { z } from "zod";
 
 class DeliveriesController {
+    async index(request: Request, response: Response): Promise<any> {
+        const delivery = await prisma.delivery.findMany({
+            include: {
+                user: { select: { name: true, email: true } },
+            },
+        });
+        return response.json({ delivery });
+    }
+
     async create(request: Request, response: Response): Promise<any> {
         const bodySchema = z.object({
             user_id: z.string().uuid(),
