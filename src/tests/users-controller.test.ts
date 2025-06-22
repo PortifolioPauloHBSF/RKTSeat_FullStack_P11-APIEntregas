@@ -30,6 +30,17 @@ describe("UsersController", () => {
         expect(response.body.message).toBe("Email already in use.");
     });
 
+    it("should throw a validation error if email is invalid", async () => {
+        const response = await request(app).post("/users").send({
+            name: "User with Incorrect Email",
+            email: "testuser@.com",
+            password: "password123",
+        });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("validation error");
+    });
+
     afterAll(async () => {
         await prisma.user.delete({ where: { id: user_id } });
     });
